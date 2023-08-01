@@ -1,4 +1,4 @@
-﻿namespace Project1.Domain.Common
+﻿namespace Mc2.CrudTest.Presentation.Shared
 {
     public class Response<T>
     {

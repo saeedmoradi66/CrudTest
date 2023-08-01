@@ -1,14 +1,14 @@
 ﻿@page "/fetchdata"
 @using Mc2.CrudTest.Presentation.Shared
 @inject HttpClient Http
+@inject Services.CustomersService CustomerService;
+<PageTitle>customers</PageTitle>
 
-<PageTitle>Weather forecast</PageTitle>
 
-<h1>Weather forecast</h1>
 
 <p>This component demonstrates fetching data from the server.</p>
 
-@if (forecasts == null)
+@if (customers == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -17,20 +17,24 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>DateOfBirth</th>
+                <th>PhoneNumber</th>
+                <th>Email</th>
+                <th>BankAccountNumber</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
+            @foreach (var customer in customers)
             {
                 <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
+                    <td>@customer.FirstName</td>
+                    <td>@customer.LastName</td>
+                    <td>@customer.DateOfBirth</td>
+                    <td>@customer.PhoneNumber</td>
+                    <td>@customer.Email</td>
+                    <td>@customer.BankAccountNumber</td>
                 </tr>
             }
         </tbody>
@@ -38,10 +42,11 @@ else
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private List<CustomerReadViewModel>? customers;
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+        var response = await CustomerService.GetAllAsync();
+        customers = response.Data;
     }
 }

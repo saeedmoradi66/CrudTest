@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
+using Mc2.CrudTest.Presentation.Shared;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Project1.Application.Common.Dtos.Customers;
 using Project1.Application.Common.Interfaces.Repository;
-using Project1.Domain.Common;
 using Project1.Domain.Entities;
 using Project1.Domain.Events;
 using Project1.Domain.ValueObjects;

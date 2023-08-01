@@ -16,6 +16,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Domain\Domain.csproj" />
+        <ProjectReference Include="..\Shared\Mc2.CrudTest.Presentation.Shared.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,11 +1,11 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Mc2.CrudTest.Presentation.Shared;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Project1.Application.Common.Dtos.Customers;
 using Project1.Application.Common.Interfaces.Repository;
-using Project1.Domain.Common;
 using Project1.Domain.Entities;
 
 namespace Project1.Application.Features.Customers.Queries
