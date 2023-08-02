@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Application.Common.Exceptions;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,7 +20,7 @@ public static class ConfigureServices
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
 
         });
-
+        services.AddTransient<ExceptionHandlingMiddleware>();
         return services;
     }
 }

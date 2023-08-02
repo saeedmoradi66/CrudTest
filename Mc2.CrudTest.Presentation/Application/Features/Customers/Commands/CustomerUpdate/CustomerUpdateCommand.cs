@@ -33,21 +33,7 @@ public class CustomerUpdateCommandHandler : BaseRequestHandler<CustomerUpdateCom
             input.CustomerViewModel.BankAccountNumber);
         if (customer.Succeeded)
         {
-            var entity = _unitOfWork.CustomersRepository.GetAll;
-
-            var customerExists=await entity
-                .Where(s=>s.Id!=input.CustomerViewModel.Id && s.FirstName== customer.Data.FirstName && s.LastName == customer.Data.LastName && s.DateOfBirth == customer.Data.DateOfBirth)
-                .FirstOrDefaultAsync();
-           if(customerExists != null)
-                return new Response<Customer>(null,new List<string> { "user is exists"});
-
-            var emailExists = await entity
-                .Where(s => s.Id != input.CustomerViewModel.Id && s.Email == customer.Data.Email)
-                .FirstOrDefaultAsync();
-            if (emailExists != null)
-                return new Response<Customer>(null, new List<string> { "email is exists" });
-
-
+            
             _unitOfWork.CustomersRepository.Update(customer.Data);
             await _unitOfWork.Commit();
         }

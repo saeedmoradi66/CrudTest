@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
+using FluentValidation.Results;
 using MediatR;
-using ValidationException = Project1.Application.Common.Exceptions.ValidationException;
+using Project1.Application.Common.Exceptions;
 
 namespace Project1.Application.Common.Behaviours;
 public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
@@ -19,17 +20,23 @@ public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TReque
         {
             var context = new ValidationContext<TRequest>(request);
 
-            var validationResults = await Task.WhenAll(
-                _validators.Select(v =>
-                    v.ValidateAsync(context, cancellationToken)));
+            var validationFailures = await Task.WhenAll(
+                _validators
+                .Select(v => v.ValidateAsync(context))
+                );
+            var validationResults = validationFailures
+                .Where(validationResult => !validationResult.IsValid)
+                .SelectMany(v => v.Errors)
+                .Select(v => new ValidationError(
+                
+                    v.PropertyName,
+                    v.ErrorMessage
+                )).ToList();
 
-            var failures = validationResults
-                .Where(r => r.Errors.Any())
-                .SelectMany(r => r.Errors)
-                .ToList();
+           
 
-            if (failures.Any())
-                throw new ValidationException(failures);
+            if (validationResults.Any())
+                throw new Exceptions.ValidationException(validationResults);
         }
         return await next();
     }

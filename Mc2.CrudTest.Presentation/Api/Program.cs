@@ -3,6 +3,7 @@ using Project1.Application;
 using Project1.Infrastructure;
 using Microsoft.Extensions.Options;
 using Serilog;
+using Application.Common.Exceptions;
 
 Log.Logger = new LoggerConfiguration()
 	.WriteTo.Console()
@@ -34,8 +35,8 @@ try
 
 	app.UseHealthChecks("/health");
 	app.UseHttpsRedirection();
-	
-	app.UseStatusCodePages();
+    app.UseMiddleware<ExceptionHandlingMiddleware>();
+    app.UseStatusCodePages();
 
 	app.UseStaticFiles();
 
