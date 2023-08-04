@@ -10,9 +10,10 @@ public class PhoneNumber : ValueObject
     public string Value { get; private set; }
     public PhoneNumber(string value)
     {
+        Validate(value);
         Value = value;
     }
-    public static PhoneNumber Create(string input)
+    private static void Validate(string input)
     {
         List<ValidationError> errors = new List<ValidationError>();
         if (string.IsNullOrWhiteSpace(input))
@@ -29,7 +30,7 @@ public class PhoneNumber : ValueObject
         {
             throw new Exceptions.ValidationException(errors);
         }
-        return new PhoneNumber(input);
+
     }
     protected override IEnumerable<object> GetEqualityComponents()
     {

@@ -9,9 +9,10 @@ public class DateOfBirth : ValueObject
     public string Value { get; private set; }
     public DateOfBirth(string value)
     {
+        Validate(value);
         Value = value;
     }
-    public static DateOfBirth Create(string input)
+    private static void Validate(string input)
     {
         List<ValidationError> errors = new List<ValidationError>();
         if (string.IsNullOrWhiteSpace(input))
@@ -23,7 +24,7 @@ public class DateOfBirth : ValueObject
         {
             throw new Exceptions.ValidationException(errors);
         }
-        return new DateOfBirth(input);
+        
     }
     protected override IEnumerable<object> GetEqualityComponents()
     {

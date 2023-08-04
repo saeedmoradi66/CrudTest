@@ -8,10 +8,11 @@ public class LastName:ValueObject
 
     public LastName(string value)
     {
+        Validate(value);
         Value = value;
     }
 
-    public static LastName Create(string value)
+    private static void Validate(string value)
     {
         List<ValidationError> errors = new List<ValidationError>();
         if (string.IsNullOrEmpty(value))
@@ -24,7 +25,7 @@ public class LastName:ValueObject
         {
             throw new Exceptions.ValidationException(errors);
         }
-        return new LastName(value);
+      
     }
 
     protected override IEnumerable<object> GetEqualityComponents()

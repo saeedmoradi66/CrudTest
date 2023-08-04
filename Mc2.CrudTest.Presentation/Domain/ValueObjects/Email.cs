@@ -14,10 +14,11 @@ public class Email : ValueObject
 
     public Email(string value)
     {
+        Validate(value);
         Value = value;
     }
 
-    public static Email Create(string input)
+    private static void Validate(string input)
     {
         List<ValidationError> errors = new List<ValidationError>();
         if (string.IsNullOrWhiteSpace(input))
@@ -34,7 +35,7 @@ public class Email : ValueObject
         {
             throw new Exceptions.ValidationException(errors);
         }
-        return new Email(input);
+       
     }
 
     protected override IEnumerable<object> GetEqualityComponents()

@@ -16,10 +16,11 @@ public class FirstName : ValueObject
 
     public FirstName(string value)
     {
+        Validate(value);
         Value = value;
     }
 
-    public static FirstName Create(string value)
+    private static void Validate(string value)
     {
         List<ValidationError> errors = new List<ValidationError>();
         if (string.IsNullOrEmpty(value))
@@ -33,7 +34,7 @@ public class FirstName : ValueObject
         {
             throw new Exceptions.ValidationException(errors);
         }
-        return new FirstName(value);
+       
     }
 
     protected override IEnumerable<object> GetEqualityComponents()

@@ -9,9 +9,10 @@ public class BankAccountNumber : ValueObject
     public string Value { get; private set; }
     public BankAccountNumber(string value)
     {
+        Validate(value);
         Value = value;
     }
-    public static BankAccountNumber Create(string input)
+    private static void Validate(string input)
     {
         List<ValidationError> errors = new List<ValidationError>();
         if (string.IsNullOrWhiteSpace(input))
@@ -28,7 +29,7 @@ public class BankAccountNumber : ValueObject
         {
             throw new Exceptions.ValidationException(errors);
         }
-        return new BankAccountNumber(input);
+       
     }
     protected override IEnumerable<object> GetEqualityComponents()
     {
