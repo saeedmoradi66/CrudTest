@@ -32,13 +32,12 @@ public class CustomerCreateCommandHandler : BaseRequestHandler<CustomerCreateCom
             input.CustomerViewModel.PhoneNumber,
             input.CustomerViewModel.Email,
             input.CustomerViewModel.BankAccountNumber);
-        if (customer.Succeeded)
-        {
-            
-            _unitOfWork.CustomersRepository.Insert(customer.Data);
-            customer.Data.AddDomainEvent(new CustomerCreatedEvent(customer.Data));
-            await _unitOfWork.Commit();
-        }
-        return customer;
+
+
+        _unitOfWork.CustomersRepository.Insert(customer);
+        customer.AddDomainEvent(new CustomerCreatedEvent(customer));
+        await _unitOfWork.Commit();
+
+        return new Response<Customer>(customer, true);
     }
 }

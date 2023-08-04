@@ -12,24 +12,24 @@ public class PhoneNumber : ValueObject
     {
         Value = value;
     }
-    public static Response<PhoneNumber> Create(string input)
+    public static PhoneNumber Create(string input)
     {
-        List<string> errors = new List<string>();
+        List<ValidationError> errors = new List<ValidationError>();
         if (string.IsNullOrWhiteSpace(input))
-            errors.Add("PhoneNumber can not be null");
+            errors.Add(new Exceptions.ValidationError("PhoneNumber", "PhoneNumber can not be null"));
         string email = input.Trim();
 
         if (email.Length > 11)
-            errors.Add("Max lengh of  PhoneNumber is 11 char");
+            errors.Add(new Exceptions.ValidationError("PhoneNumber", "Max lengh of  PhoneNumber is 11 char"));
 
         if (!Regex.IsMatch(email, ValidationConstant.CellphonePattern))
-            errors.Add("PhoneNumber is not valid");
+            errors.Add(new Exceptions.ValidationError("PhoneNumber", "PhoneNumber is not valid"));
 
         if (errors.Count > 0)
         {
-            return new Response<PhoneNumber>(null, errors);
+            throw new Exceptions.ValidationException(errors);
         }
-        return new Response<PhoneNumber>(new PhoneNumber(input), true);
+        return new PhoneNumber(input);
     }
     protected override IEnumerable<object> GetEqualityComponents()
     {

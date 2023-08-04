@@ -17,24 +17,24 @@ public class Email : ValueObject
         Value = value;
     }
 
-    public static Response<Email> Create(string input)
+    public static Email Create(string input)
     {
-        List<string> errors = new List<string>();
+        List<ValidationError> errors = new List<ValidationError>();
         if (string.IsNullOrWhiteSpace(input))
-            errors.Add("Email can not be null");
+            errors.Add(new Exceptions.ValidationError("Email","Email can not be null"));
         string email = input.Trim();
 
         if (email.Length > 256)
-            errors.Add("Max lengh of email is 256 char");
+            errors.Add(new Exceptions.ValidationError("Email","Max lengh of email is 256 char"));
 
         if (!Regex.IsMatch(email, ValidationConstant.EmailPattern))
-            errors.Add("Email is not valid");
+            errors.Add(new Exceptions.ValidationError("Email","Email is not valid"));
 
         if (errors.Count > 0)
         {
-            return new Response<Email>(null, errors);
+            throw new Exceptions.ValidationException(errors);
         }
-        return new Response<Email>(new Email(input), true);
+        return new Email(input);
     }
 
     protected override IEnumerable<object> GetEqualityComponents()

@@ -11,20 +11,20 @@ public class LastName:ValueObject
         Value = value;
     }
 
-    public static Response<LastName> Create(string value)
+    public static LastName Create(string value)
     {
-        List<string> errors = new List<string>();
+        List<ValidationError> errors = new List<ValidationError>();
         if (string.IsNullOrEmpty(value))
-            errors.Add("LastName can not be null");
+            errors.Add(new Exceptions.ValidationError("LastName", "value can not be null"));
         if (value.Length < 2)
-            errors.Add("Min lengh of last name is 2 char");
+            errors.Add(new Exceptions.ValidationError("LastName", "Min lengh of last name is 2 char"));
         if (value.Length > 50)
-            errors.Add("Max lengh of last name is 50 char");
+            errors.Add(new Exceptions.ValidationError("LastName", "Max lengh of last name is 50 char"));
         if (errors.Count > 0)
         {
-            return new Response<LastName>(null, errors);
+            throw new Exceptions.ValidationException(errors);
         }
-        return new Response<LastName>(new LastName(value), true);
+        return new LastName(value);
     }
 
     protected override IEnumerable<object> GetEqualityComponents()

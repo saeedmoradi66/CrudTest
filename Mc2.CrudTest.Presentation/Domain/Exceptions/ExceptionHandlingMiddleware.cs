@@ -1,17 +1,9 @@
-﻿
-using Mc2.CrudTest.Presentation.Shared;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Project1.Application.Common.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 
-namespace Application.Common.Exceptions
+namespace Project1.Domain.Exceptions
 {
     public sealed class ExceptionHandlingMiddleware : IMiddleware
     {
@@ -38,19 +30,21 @@ namespace Application.Common.Exceptions
             var statusCode = GetStatusCode(exception);
 
             var response = new Response<IReadOnlyCollection<ValidationError>>(GetErrors(exception), false);
-            
-            
+
+
             httpContext.Response.ContentType = "application/json";
 
             httpContext.Response.StatusCode = statusCode;
-
+            if(response.Data!=null)
             await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
+            else
+            await httpContext.Response.WriteAsync(JsonSerializer.Serialize(exception.Message));
         }
 
         private static int GetStatusCode(Exception exception) =>
             exception switch
             {
-                
+
                 NotFoundException => StatusCodes.Status404NotFound,
                 ValidationException => StatusCodes.Status400BadRequest,
                 _ => StatusCodes.Status500InternalServerError
@@ -71,7 +65,7 @@ namespace Application.Common.Exceptions
             {
                 errors = validationException.Errors;
             }
-
+            
             return errors;
         }
     }

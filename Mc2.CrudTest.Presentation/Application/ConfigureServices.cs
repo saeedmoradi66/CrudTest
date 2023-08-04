@@ -1,9 +1,9 @@
-﻿using System.Reflection;
-using Application.Common.Exceptions;
-using FluentValidation;
+﻿using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Project1.Application.Common.Behaviours;
+using Project1.Domain.Exceptions;
+using System.Reflection;
 
 namespace Project1.Application;
 public static class ConfigureServices

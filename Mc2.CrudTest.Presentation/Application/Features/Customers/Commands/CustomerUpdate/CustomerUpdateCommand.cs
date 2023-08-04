@@ -31,12 +31,8 @@ public class CustomerUpdateCommandHandler : BaseRequestHandler<CustomerUpdateCom
             input.CustomerViewModel.PhoneNumber,
             input.CustomerViewModel.Email,
             input.CustomerViewModel.BankAccountNumber);
-        if (customer.Succeeded)
-        {
-            
-            _unitOfWork.CustomersRepository.Update(customer.Data);
-            await _unitOfWork.Commit();
-        }
-        return new Response<Customer>();
+        _unitOfWork.CustomersRepository.Update(customer);
+        await _unitOfWork.Commit();
+        return new Response<Customer>(customer, true);
     }
 }

@@ -11,24 +11,24 @@ public class BankAccountNumber : ValueObject
     {
         Value = value;
     }
-    public static Response<BankAccountNumber> Create(string input)
+    public static BankAccountNumber Create(string input)
     {
-        List<string> errors = new List<string>();
+        List<ValidationError> errors = new List<ValidationError>();
         if (string.IsNullOrWhiteSpace(input))
-            errors.Add("Bank Account Number can not be null");
+            errors.Add(new Exceptions.ValidationError("BankAccountNumber", "Bank Account Number can not be null"));
         string email = input.Trim();
 
         if (email.Length > 24)
-            errors.Add("Max lengh of Bank Account Number is 24 char");
+            errors.Add(new Exceptions.ValidationError("BankAccountNumber", "Max lengh of Bank Account Number is 24 char"));
 
         if (!Regex.IsMatch(email, ValidationConstant.BankAccountNumber))
-            errors.Add("Bank Account Number is not valid");
+            errors.Add(new Exceptions.ValidationError("BankAccountNumber", "Bank Account Number is not valid"));
 
         if (errors.Count > 0)
         {
-            return new Response<BankAccountNumber>(null, errors);
+            throw new Exceptions.ValidationException(errors);
         }
-        return new Response<BankAccountNumber>(new BankAccountNumber(input), true);
+        return new BankAccountNumber(input);
     }
     protected override IEnumerable<object> GetEqualityComponents()
     {

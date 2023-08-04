@@ -1,4 +1,4 @@
-﻿namespace Application.Common.Exceptions
+﻿namespace Project1.Domain.Exceptions
 {
     public class NotFoundException : Exception
     {

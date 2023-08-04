@@ -1,4 +1,6 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿using Project1.Domain.Constants;
+using System.Text.RegularExpressions;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Project1.Domain.ValueObjects;
 
@@ -9,19 +11,19 @@ public class DateOfBirth : ValueObject
     {
         Value = value;
     }
-    public static Response<DateOfBirth> Create(string input)
+    public static DateOfBirth Create(string input)
     {
-        List<string> errors = new List<string>();
+        List<ValidationError> errors = new List<ValidationError>();
         if (string.IsNullOrWhiteSpace(input))
-            errors.Add("DateOfBirth can not be null");
-        
+            errors.Add(new Exceptions.ValidationError("DateOfBirth", "DateOfBirth can not be null"));
         if (input.Length > 10)
-            errors.Add("DateOfBirth is 10 char ex:1366/01/09");
+            errors.Add(new Exceptions.ValidationError("DateOfBirth","DateOfBirth is 10 char ex:1366/01/09"));
+        
         if (errors.Count > 0)
         {
-            return new Response<DateOfBirth>(null, errors);
+            throw new Exceptions.ValidationException(errors);
         }
-        return new Response<DateOfBirth>(new DateOfBirth(input), true);
+        return new DateOfBirth(input);
     }
     protected override IEnumerable<object> GetEqualityComponents()
     {

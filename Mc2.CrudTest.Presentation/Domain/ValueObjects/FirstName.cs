@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -18,21 +19,21 @@ public class FirstName : ValueObject
         Value = value;
     }
 
-    public static Response<FirstName> Create(string value)
+    public static FirstName Create(string value)
     {
-        List<string> errors = new List<string>();
+        List<ValidationError> errors = new List<ValidationError>();
         if (string.IsNullOrEmpty(value))
-            errors.Add("Firstname can not be null");
+            errors.Add(new Exceptions.ValidationError (  "FirstName",  "value can not be null" ));
         if (value.Length < 2)
-            errors.Add("Min lengh of first name is 2 char");
+            errors.Add(new Exceptions.ValidationError("FirstName", "Min lengh of first name is 2 char"));
         if (value.Length > 50)
-            errors.Add("Max lengh of first name is 50 char");
+            errors.Add(new Exceptions.ValidationError("FirstName", "Max lengh of first name is 50 char"));
         
         if (errors.Count > 0)
         {
-            return new Response<FirstName>(null, errors);
+            throw new Exceptions.ValidationException(errors);
         }
-        return new Response<FirstName>(new FirstName(value), true);
+        return new FirstName(value);
     }
 
     protected override IEnumerable<object> GetEqualityComponents()
