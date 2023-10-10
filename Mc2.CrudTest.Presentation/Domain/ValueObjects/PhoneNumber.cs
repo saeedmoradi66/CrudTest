@@ -1,7 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Project1.Domain.Constants;
 using System.Text.RegularExpressions;
-using Project1.Domain.Constants;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Project1.Domain.ValueObjects;
 

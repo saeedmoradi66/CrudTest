@@ -18,8 +18,16 @@ public class CustomerRepository : EFRepository<Customer>, ICustomerRepository
     }
     public async Task<bool> IsEmailUniqueAsync(string email)
     {
-        var result = await GetAll.AnyAsync(s => s.Email.Equals(new Email(email)));
-        return !result;
+        try
+        {
+            var result = await GetAll.AnyAsync(s => s.Email.Equals(new Email(email)));
+            return !result;
+        }
+        catch (Exception)
+        {
+
+            return false;
+        }
     }
     public async Task<bool> IsCustomerUniqueAsync(string firstName, string lastName, string dateOfBirth)
     {
