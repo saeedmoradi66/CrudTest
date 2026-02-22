@@ -1,48 +1,64 @@
-# CRUD Code Test 
+# Customer Management System
 
-Please read each note very carefully!
-Feel free to add/change project structure to a clean architecture to your view.
-and if you are not able to work on FrontEnd project, you can add a Swagger UI
-in a new Front project.
+A production-ready CRUD application built with **Clean Architecture**, **DDD**, **TDD**, and **CQRS** patterns in ASP.NET Core.
 
-Create a simple CRUD application with ASP NET that implements the below model:
-```
-Customer {
-	Firstname
-	Lastname
-	DateOfBirth
-	PhoneNumber
-	Email
-	BankAccountNumber
-}
-```
-## Practices and patterns (Must):
+## 🏗️ Architecture
 
-- [TDD](https://docs.microsoft.com/en-us/visualstudio/test/quick-start-test-driven-development-with-test-explorer?view=vs-2022)
-- [DDD](https://en.wikipedia.org/wiki/Domain-driven_design)
-- [BDD](https://en.wikipedia.org/wiki/Behavior-driven_development)
-- [Clean architecture](https://github.com/jasontaylordev/CleanArchitecture)
-- [Clean Code](https://en.wikipedia.org/wiki/SonarQube)
-- [CQRS](https://en.wikipedia.org/wiki/Command%E2%80%93query_separation#Command_query_responsibility_separation) pattern ([Event sourcing](https://en.wikipedia.org/wiki/Domain-driven_design#Event_sourcing)).
-- Clean git commits that shows your work progress.
+This project demonstrates enterprise-level software design:
 
-### Validations (Must)
+- **Clean Architecture** — strict separation of concerns across layers
+- **Domain-Driven Design (DDD)** — rich domain model with aggregates and value objects
+- **CQRS** — separate read/write models via MediatR
+- **TDD + BDD** — full test coverage with xUnit and SpecFlow
 
-- During Create; validate the phone number to be a valid *mobile* number only (Please use this library [Google LibPhoneNumber](https://github.com/google/libphonenumber) to validate number at the backend).
+## 🛠️ Tech Stack
 
-- A Valid email and a valid bank account number must be checked before submitting the form.
+| Layer | Technology |
+|---|---|
+| Backend | ASP.NET Core 8, C# |
+| ORM | Entity Framework Core |
+| Database | SQL Server  |
+| Frontend | Blazor WebAssembly |
+| Testing | xUnit, SpecFlow (BDD), FluentAssertions |
+| Patterns | MediatR (CQRS), AutoMapper |
 
-- Customers must be unique in database: By `Firstname`, `Lastname` and `DateOfBirth`.
+## 📁 Project Structure
+Mc2.CrudTest/
 
-- Email must be unique in the database.
+├── Mc2.CrudTest.Domain/ # Entities, Value Objects, Domain Events
 
-### Storage (Must)
+├── Mc2.CrudTest.Application/ # CQRS Commands/Queries, DTOs
 
-- Store the phone number in a database with minimized space storage (choose `varchar`/`string`, or `ulong` whichever store less space).
+├── Mc2.CrudTest.Infrastructure/ # EF Core, Repositories
 
-### Delivery (Must)
-- Please clone this repository in a new github repository in private mode and share with ID: `mason-chase` in private mode on github.com, make sure you do not erase my commits and then create a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) (code review).
+├── Mc2.CrudTest.Presentation/ # Blazor WebAssembly
 
-## Nice to do:
-- Blazor Web.
-- Docker-compose project that loads database service automatically which `docker-compose up`
+└── Mc2.CrudTest.AcceptanceTests/ # BDD Tests with SpecFlow
+
+✅ Key Features
+Create, Read, Update, Delete customers
+Domain validation (unique email, valid phone number, IBAN validation)
+Full test suite: Unit Tests + Acceptance Tests
+Clean separation between domain logic and infrastructure
+🚀 Getting Started
+bash
+
+git clone https://github.com/saeedmoradi66/CrudTest.git
+
+cd CrudTest
+
+dotnet restore
+
+dotnet ef database update --project Mc2.CrudTest.Infrastructure
+
+dotnet run --project Mc2.CrudTest.Presentation
+
+🧪 Running Tests
+bash
+
+dotnet test
+
+📐 Design Decisions
+Value Objects for Email, PhoneNumber, and BankAccountNumber to enforce domain invariants
+MediatR pipeline for cross-cutting concerns (validation, logging)
+Repository pattern abstracted behind interfaces for testability
